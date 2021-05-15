@@ -5,7 +5,7 @@ const geonamesKey = 'jogaraba';
 
 // Weatherbit API
 const weatherbitUrl = 'http://api.weatherbit.io/v2.0/forecast/daily?';
-const WeatherbitKey = 'f2c0becdfbbc4697987d77c9278d4151';
+const weatherbitKey = 'f2c0becdfbbc4697987d77c9278d4151';
 
 // Pixabay API
 const pixabayUrl = 'https://pixabay.com/api/?key=';
