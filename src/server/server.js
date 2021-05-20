@@ -26,5 +26,8 @@ const server = app.listen(port, () => {
 });
 
 // GET route
+app.get('/all', function (req, res) {
+    res.send(projectData);
+});
 
 // POST route

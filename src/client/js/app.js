@@ -11,34 +11,6 @@ const weatherbitKey = 'f2c0becdfbbc4697987d77c9278d4151';
 const pixabayUrl = 'https://pixabay.com/api/?key=';
 const pixabayKey = '21600245-8c008566b7aa3e4a91c9543ab';
 
-// Create a new date instance dynamically with JS
-let d = new Date();
-let newDate = d.getMonth()+ 1 +'.'+ d.getDate()+'.'+ d.getFullYear();
-
-// Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', performAction);
-
-//Function called by event listener
-function performAction(e) {
-    let newCity = document.getElementById('city').value;
-    let newDate = document.getElementById('date').value;
-    getCityData (geonamesUrl, geonamesUrlTwo, newCity, geonamesKey)
-    .then((data) => {
-        let latitude = data.geonames[0].lat;
-        let longitude = data.geonames[0].lng;
-        const weatherData = getWeatherData(latitude, longitude, newDate);
-        return weatherData;
-    })
-    .then((weatherData) => {
-        const tempCelsius = Math.round((weatherData.data[0].temp -32) *5/9);
-        const allData = postData('/add', {newCity, newDate, temperature: tempCelsius, weather: weatherData.data[0].weather.description});
-        return allData;
-    })
-    .then((allData) => {
-        updateUI(allData);
-    })
-}
-
 // Functions to GET Web API Data
 const getCityData = async (geonamesUrl, geonamesUrlTwo, newCity, geonamesKey) => {
     try {
@@ -55,6 +27,16 @@ const getWeatherData = async (latitude, longitude, newDate) => {
         const res = await fetch (weatherbitUrl + '&lat=' + latitude + '&lon=' + longitude + '&start_date=' + newDate + '&end_date=' + newDate + '&units=I'+'&key=' + weatherbitKey);
         const weatherData = await res.json();
         return weatherData;
+    } catch(error) {
+        console.log("error", error);
+    };
+};
+
+const getImageData = async (pixabayUrl, pixabayKey, newCity) => {
+    try {
+        const res = await fetch (pixabayUrl + pixabayKey + '&q=' + newCity + '+&image_type=illustration');
+        const imageData = await res.json();
+        return imageData;
     } catch(error) {
         console.log("error", error);
     };
@@ -77,3 +59,33 @@ const postData = async (url = '', data = {}) => {
         console.log("error", error);
     };
 };
+
+// Event listener to add function to existing HTML DOM element
+document.getElementById('generate').addEventListener('click', performAction);
+
+//Function called by event listener
+function performAction(e) {
+    let newCity = document.getElementById('city').value;
+    const imageData = getImageData(pixabayUrl, pixabayKey, newCity);
+    const cityData = getCityData(geonamesUrl, geonamesUrlTwo, newCity, geonamesKey);
+    return cityData
+    .then((cityData) => {
+        let latitude = cityData.geonames[0].lat;
+        let longitude = cityData.geonames[0].lng;
+        let newDate = document.getElementById('date').value;
+        const weatherData = getWeatherData(latitude, longitude, newDate);
+        return weatherData
+    })
+    .then((weatherData) => {
+        const tempCelsius = Math.round((weatherData.data[0].temp -32) *5/9);
+        const allData = postData('/add', {newCity, newDate, image : imageData, temperature: tempCelsius, weather: weatherData.data[0].weather.description});
+        return allData;
+    })
+    .then((allData) => {
+        updateUI(allData);
+    })
+};
+
+//Update UI
+
+    
