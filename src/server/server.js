@@ -31,3 +31,7 @@ app.get('/all', function (req, res) {
 });
 
 // POST route
+app.post('/add', function (req, res) {
+    //Complete data
+    res.send(projectData);
+});

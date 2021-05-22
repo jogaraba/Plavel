@@ -87,5 +87,19 @@ function performAction(e) {
 };
 
 //Update UI
-
-    
+const updateUI = async (allData) => {
+    try {
+        const res = await fetch('/all');
+        const allData = await res.json();
+        let cityImage = imageData;
+        //Fix date
+        let d = new Date();
+        let newDate = d.getMonth()+ 1 +'.'+ d.getDate()+'.'+ d.getFullYear();
+        const daysLeft = Math.ceil((dateInput - currentDate) / (3600 * 1000 * 24));
+        //
+        document.getElementById('city-image').setAttribute('src', cityImage);
+        document.getElementById('holder-entry').innerHTML = `Your trip to ${allData.newCity} is within ${daysLeft} days, and the weather will be ${allData.temperature} degrees and ${allData.weather}`;
+    } catch(error) {
+        console.log("error", error);
+    };
+};
