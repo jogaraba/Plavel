@@ -95,7 +95,7 @@ const updateUI = async (allData) => {
         //Fix date
         let d = new Date();
         let newDate = d.getMonth()+ 1 +'.'+ d.getDate()+'.'+ d.getFullYear();
-        const daysLeft = Math.ceil((dateInput - currentDate) / (3600 * 1000 * 24));
+        const daysLeft = Math.ceil((newDate - currentDate) / (3600 * 1000 * 24));
         //
         document.getElementById('city-image').setAttribute('src', cityImage);
         document.getElementById('holder-entry').innerHTML = `Your trip to ${allData.newCity} is within ${daysLeft} days, and the weather will be ${allData.temperature} degrees and ${allData.weather}`;
@@ -103,3 +103,5 @@ const updateUI = async (allData) => {
         console.log("error", error);
     };
 };
+
+export {performAction}

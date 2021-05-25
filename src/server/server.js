@@ -32,6 +32,11 @@ app.get('/all', function (req, res) {
 
 // POST route
 app.post('/add', function (req, res) {
-    //Complete data
+    let data = req.body;
+    projectData["newCity"] = data.newCity;
+    projectData["newDate"] = data.newDate;
+    projectData["temperature"] = data.temperature;
+    projectData["weather"] = data.weather;
+    projectData["image"] = data.image;
     res.send(projectData);
 });

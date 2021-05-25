@@ -5,13 +5,6 @@ const WorkboxPlugin = require('workbox-webpack-plugin')
 
 module.exports = {
     entry: './src/client/index.js'
-    output: {
-        libraryTarget: 'var',
-        library: 'Client'
-    },
-    mode: 'development',
-    devtool: 'source-map',
-    stats: 'verbose',
     module: {
         rules: [            
             {
@@ -24,7 +17,7 @@ module.exports = {
     plugins: [
         new HtmlWebPackPlugin({
             template: "./src/client/views/index.html",
-            filename: "./index.html",
+            filename: "./index.html"
         }),
         new WorkboxPlugin.GenerateSW()
     ]
