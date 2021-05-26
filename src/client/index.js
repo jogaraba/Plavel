@@ -1,6 +1,6 @@
-import {performAction} from './js/app';
+import {performAction,performA} from './js/app';
 import './styles/styles.scss';
 
-performAction();
+performA();
 
-export default performAction;
+export default performA;

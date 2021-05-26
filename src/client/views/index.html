@@ -11,25 +11,26 @@
     </header>
     <main>
         <section class="image">
-            <img id="city-image" src="http://farmaciaaguadulce.es/wp-content/uploads/2020/07/playa-480x270.jpg">
+            <img id="cityImage" src="http://farmaciaaguadulce.es/wp-content/uploads/2020/07/playa-480x270.jpg">
         </section>
-        <section class="input">
+        <section class="form">
             <div class="holder city">
-                <label for="city">My trip to: <input type="text" id="city"></label>
+                <label for="city">My trip to: <input class="input" type="text" id="city"></label>
             </div>
             <div class="holder date">
-                <label for="date">Departing: <input type="date" id="date"></label>
+                <label for="date">Departing: <input class="input" type="date" id="date"></label>
             </div>
             <div class="button">
-                <button type="submit" id="generate">Plan it</button>
+                <button type="submit" id="submitButton">Plan it</button>
             </div>
         </section>
         <section class="output">
-            <div id="holder-entry">
+            <div id="holderEntry">
             </div>
         </section>
     </main>
     <script>
+        
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('../dist/service-worker.js');

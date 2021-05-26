@@ -42,63 +42,65 @@ const getImageData = async (pixabayUrl, pixabayKey, newCity) => {
     };
 };
 
+//Function called by event listener
+const performAction = async (e) => {
+    let newCity = document.getElementById('city').value;
+    let newDate = document.getElementById('date').value;
+    let imageData = await getImageData(pixabayUrl, pixabayKey, newCity);
+    getCityData(geonamesUrl, geonamesUrlTwo, newCity, geonamesKey)
+        .then(async (data) => {
+            let latitude = data.geonames[0].lat;
+            let longitude = data.geonames[0].lng;
+            if (!imageData.hits.length) {
+                const countryName = data.geonames[0].countryName;
+                imageData = await getImageData(pixabayUrl, pixabayKey, countryName);
+            }
+            const weatherData = await getWeatherData(latitude, longitude, newDate);
+            return weatherData
+        })
+        .then(async (weatherData) => {
+            const tempCelsius = Math.round((weatherData.data[0].temp -32) *5/9);
+            const allData = await postData('http://localhost:8080/add', {
+                newCity,
+                newDate,
+                image: imageData,
+                temperature: tempCelsius, weather: weatherData.data[0].weather.description
+            });
+            return allData;
+        })
+        .then((allData) => {
+            updateUI(allData, imageData);
+        });
+};
 //Function to POST Web API Data
 const postData = async (url = '', data = {}) => {
+    const response = await fetch(url, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
     try {
-        const response = await fetch (url, {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
         const newData = await response.json();
         return newData;
     } catch(error) {
-        console.log("error", error);
-    };
+        console.log('error posting data', error)
+    }
 };
-
 // Event listener to add function to existing HTML DOM element
-document.getElementById('generate').addEventListener('click', performAction);
-
-//Function called by event listener
-function performAction(e) {
-    let newCity = document.getElementById('city').value;
-    const imageData = getImageData(pixabayUrl, pixabayKey, newCity);
-    const cityData = getCityData(geonamesUrl, geonamesUrlTwo, newCity, geonamesKey);
-    return cityData
-    .then((cityData) => {
-        let latitude = cityData.geonames[0].lat;
-        let longitude = cityData.geonames[0].lng;
-        let newDate = document.getElementById('date').value;
-        const weatherData = getWeatherData(latitude, longitude, newDate);
-        return weatherData
-    })
-    .then((weatherData) => {
-        const tempCelsius = Math.round((weatherData.data[0].temp -32) *5/9);
-        const allData = postData('/add', {newCity, newDate, image : imageData, temperature: tempCelsius, weather: weatherData.data[0].weather.description});
-        return allData;
-    })
-    .then((allData) => {
-        updateUI(allData);
-    })
-};
+export const performA = () => { document.getElementById('submitButton').addEventListener('click', performAction)}
 
 //Update UI
-const updateUI = async (allData) => {
+const updateUI = (allData, imageData) => {
     try {
-        const res = await fetch('/all');
-        const allData = await res.json();
-        let cityImage = imageData;
-        //Fix date
-        let d = new Date();
-        let newDate = d.getMonth()+ 1 +'.'+ d.getDate()+'.'+ d.getFullYear();
-        const daysLeft = Math.ceil((newDate - currentDate) / (3600 * 1000 * 24));
-        //
-        document.getElementById('city-image').setAttribute('src', cityImage);
-        document.getElementById('holder-entry').innerHTML = `Your trip to ${allData.newCity} is within ${daysLeft} days, and the weather will be ${allData.temperature} degrees and ${allData.weather}`;
+        let cityImageURL = imageData?.hits[0]?.webformatURL;
+        let tripDate = new Date(allData.newDate);
+        const msLeft = tripDate.getTime() - Date.now();
+        const daysLeft = Math.ceil(msLeft / 1000 / 60 / 60 / 24);
+        document.getElementById('cityImage').setAttribute('src', cityImageURL);
+        document.getElementById('holderEntry').innerHTML = `
+            Your trip to ${allData.newCity} is within ${daysLeft} days, and the weather will be ${allData.temperature} degrees and ${allData.weather}
+        `;
     } catch(error) {
         console.log("error", error);
     };

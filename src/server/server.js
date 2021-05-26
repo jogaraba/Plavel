@@ -11,7 +11,7 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+// dotenv.config()
 // Cors for cross origin allowance
 const cors = require("cors");
 app.use(cors());
@@ -21,7 +21,7 @@ app.use(express.static('dist'));
 
 // Setup Server
 const port = 8080;
-const server = app.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server is running on localhost: ${port}`);
 });
 
@@ -31,7 +31,7 @@ app.get('/all', function (req, res) {
 });
 
 // POST route
-app.post('/add', function (req, res) {
+app.post('/add', (req, res) => {
     let data = req.body;
     projectData["newCity"] = data.newCity;
     projectData["newDate"] = data.newDate;
@@ -39,4 +39,7 @@ app.post('/add', function (req, res) {
     projectData["weather"] = data.weather;
     projectData["image"] = data.image;
     res.send(projectData);
+    console.log('Geo added successfully!')
 });
+
+module.exports = app
