@@ -64,7 +64,8 @@ const performAction = async (e) => {
                 newCity,
                 newDate,
                 image: imageData,
-                temperature: tempCelsius, weather: weatherData.data[0].weather.description
+                temperature: tempCelsius, 
+                weather: weatherData.data[0].weather.description
             });
             return allData;
         })
@@ -100,9 +101,7 @@ const updateUI = (allData, imageData) => {
         const msLeft = tripDate.getTime() - Date.now();
         const daysLeft = Math.ceil(msLeft / 1000 / 60 / 60 / 24);
         document.getElementById('cityImage').setAttribute('src', cityImageURL);
-        document.getElementById('holderEntry').innerHTML = `
-            Your trip to ${allData.newCity} is within ${daysLeft} days, and the weather will be ${allData.temperature} degrees and ${allData.weather}
-        `;
+        document.getElementById('holderEntry').innerHTML = `Your trip to ${allData.newCity} is within ${daysLeft} days, and the weather will be ${allData.temperature} degrees and ${allData.weather}`;
     } catch(error) {
         console.log("error", error);
     };
