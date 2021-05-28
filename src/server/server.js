@@ -11,7 +11,7 @@ const app = express();
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-// dotenv.config()
+
 // Cors for cross origin allowance
 const cors = require("cors");
 app.use(cors());
@@ -39,7 +39,6 @@ app.post('/add', (req, res) => {
     projectData["weather"] = data.weather;
     projectData["image"] = data.image;
     res.send(projectData);
-    console.log('Geo added successfully!')
 });
 
 module.exports = app

@@ -72,6 +72,7 @@ const performAction = async (e) => {
             updateUI(allData, imageData);
         });
 };
+
 //Function to POST Web API Data
 const postData = async (url = '', data = {}) => {
     const response = await fetch(url, {
@@ -87,6 +88,7 @@ const postData = async (url = '', data = {}) => {
         console.log('error posting data', error)
     }
 };
+
 // Event listener to add function to existing HTML DOM element
 export const performA = () => { document.getElementById('submitButton').addEventListener('click', performAction)}
 
