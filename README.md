@@ -11,5 +11,6 @@ Cors, Express, Git, Webpack, Babel, css-loader, mini-css, node-sass, sass-loader
 Run the app:
 
 - npm install
+- npm run build
 - npm run start
 
