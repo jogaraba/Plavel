@@ -8,6 +8,10 @@ Dependdencies used:
 
 Cors, Express, Git, Webpack, Babel, css-loader, mini-css, node-sass, sass-loader, style-loader, Jest.
 
+Extra feature:
+
+When the images API responds with an empty list of images, do another request using the country name from the Weather API as query string. This will ensure we have a relevant image for the location provided.
+
 Run the app:
 
 - npm install
