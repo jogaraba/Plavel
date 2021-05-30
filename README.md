@@ -18,3 +18,6 @@ Run the app:
 - npm run build
 - npm run start
 
+Test the app:
+
+- npm test
